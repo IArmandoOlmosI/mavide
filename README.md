@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## MAVIDE
+## Al probarla
+Debido que la aplicacion no funcionó al momento de probarla con AWS no pude probarla completa, se listaran los problemas que tuve al ser usuario:
+- No me pude registrar debido a un error del CAPTCHA
+- Se puede acceder a las vistas de admin y user sin estar logeado
+- Al momento de querer desplegarla localmente no tenia readme de lo que se necesitaba y como
 
-## Getting Started
+## Cambios hechos (mejoras)
+- Se genero seguridad en la vista /admin con JWT
+- Se agrego el middleware para la proteccion de esa ruta
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Lo que se uso y se necesitaban
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Para la aplicación**: Next.js y React
+* **Para guardar datos**: MongoDB
+* **Para la seguridad**: Usamos `jose` JWT para para mantener sesiones seguras
+* **Se necesitaban cuentas en**: reCAPTCHA y PLAIN para verificar correos y proteger el sitio
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Como desplegarlo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Tener instalados Node.js, npm y jose (JWT)
+- Tener cuenta en Mongodb Atlas
+- Clonar el repo en tu dispositivo
+- Ejecutar el siguiente comando `npm i && npm run build && npm run start` o en caso `npm run dev` 
+- En caso de no funcionar añadir el .env manualmente con `URI de mongoDB`, `token de JWT`, `los 2 tokens de CAPTCHA` y los de `tokens de PLAIN`, queda pendiente su funcionalidad
