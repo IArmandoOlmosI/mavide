@@ -10,6 +10,11 @@ export async function POST(req) {
     const { email, password } = await req.json();
     const captchaToken = req.headers.get("captcha-token");
 
+
+    if (!password || password.length < 8) {
+      return NextResponse.json({ error: "La contraseña debe tener al menos 8 caracteres" }, { status: 400 });
+    }
+
     // Validar CAPTCHA
     const verify = await fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captchaToken}`,

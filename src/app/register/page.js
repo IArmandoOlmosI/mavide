@@ -11,46 +11,53 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [modalMsg, setModalMsg] = useState("");
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setModalMsg("");
 
-    // Validar que las contraseñas coincidan
     if (password !== confirmPassword) {
       setModalMsg("Las contraseñas no coinciden");
       return;
     }
 
-    try {
-      // Generar token reCAPTCHA
-      const token = await grecaptcha.execute(
-        process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
-        { action: "register" }
-      );
-
-      const res = await fetch("/api/registerUser", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "captcha-token": token
-        },
-        body: JSON.stringify({ email, password, role: "user" }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        // Mostrar el mensaje que envía el backend (revisar correo)
-        setModalMsg(data.message);
-        setTimeout(() => router.push("/login"), 2000);
-      } else {
-        setModalMsg(data.error || "Error al registrar usuario");
-      }
-    } catch (err) {
-      setModalMsg("Error de conexión al servidor");
-      console.error(err);
+    if (password.length < 8) {
+    setModalMsg("La contraseña debe tener al menos 8 caracteres.");
+    return;
     }
+
+
+    grecaptcha.ready(async () => {
+      try {
+        const token = await grecaptcha.execute(
+          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+          { action: "register" }
+        );
+
+        const res = await fetch("/api/registerUser", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "captcha-token": token,
+          },
+          
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setModalMsg(data.message);
+          setTimeout(() => router.push("/login"), 3000);
+        } else {
+          setModalMsg(data.error || "Error al registrar usuario");
+        }
+      } catch (err) {
+        setModalMsg("Error de conexión al servidor. Intenta de nuevo.");
+        console.error(err);
+      }
+    });
   };
 
   return (
@@ -63,21 +70,23 @@ export default function RegisterPage() {
       <Header />
 
       <main className="flex flex-grow">
-
-        {/* Imagen a la izquierda */}
         <div className="hidden md:flex w-1/2 bg-gray-300 items-center justify-center">
-          <img 
-            src="/images/registro.jpeg" 
-            alt="Registro Imagen" 
+          <img
+            src="/images/registro.jpeg"
+            alt="Registro Imagen"
             className="object-cover w-3/4 h-3/4 rounded-lg shadow-lg"
           />
         </div>
 
-        {/* Formulario a la derecha */}
         <div className="flex flex-col w-full md:w-1/2 justify-center items-center p-12 bg-gray-100">
-          <h2 className="text-4xl font-bold mb-8 text-gray-800">Registro de Usuario</h2>
-          
-          <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-6">
+          <h2 className="text-4xl font-bold mb-8 text-gray-800">
+            Registro de Usuario
+          </h2>
+
+          <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-md flex flex-col gap-6"
+          >
             <input
               type="email"
               placeholder="Correo electrónico"
@@ -105,17 +114,14 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              className="bg-blue-900 text-white px-5 py-3 rounded-lg text-lg font-semibold hover:bg-blue-800 transition"
+              className="bg-blue-900 text-white px-5 py-3 rounded-lg text-lg font-semibold hover:bg-blue-800 transition disabled:bg-gray-500 disabled:cursor-not-allowed"
             >
-              Registrarse
+              Registarase
             </button>
           </form>
         </div>
-
       </main>
-
       <Footer />
-
       {modalMsg && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
           <div className="bg-gray-900 text-white p-8 md:p-10 rounded-lg shadow-xl w-80 md:w-96 text-center">
