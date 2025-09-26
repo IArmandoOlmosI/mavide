@@ -23,4 +23,5 @@ Debido que la aplicacion no funcionó al momento de probarla con AWS no pude pro
 - Tener cuenta en Mongodb Atlas
 - Clonar el repo en tu dispositivo
 - Ejecutar el siguiente comando `npm i && npm run build && npm run start` o en caso `npm run dev` 
-- En caso de no funcionar añadir el .env manualmente con `URI de mongoDB`, `token de JWT`, `los 2 tokens de CAPTCHA` y los de `tokens de PLAIN`, queda pendiente su funcionalidad
+- En caso de no funcionar añadir el .env manualmente con `URI de mongoDB`, `token de JWT`, `los 2 tokens de CAPTCHA` y los de `tokens de PLAIN`
+- Queda pendiente funcionalidad de registro de usuario
