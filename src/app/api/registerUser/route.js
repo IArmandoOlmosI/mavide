@@ -3,7 +3,7 @@ import clientPromise from "../../../lib/mongodb";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import { sendVerificationEmail } from "../../../lib/MailVerif";
-import crypto from "crypto"; // Para generar token único
+import crypto from "crypto";
 
 export async function POST(req) {
   try {
@@ -12,7 +12,7 @@ export async function POST(req) {
 
 
     if (!password || password.length < 8) {
-      return NextResponse.json({ error: "La contraseña debe tener al menos 8 caracteres" }, { status: 400 });
+      return NextResponse.json({ error: "Debe tener al menos 8 caracteres" }, { status: 400 });
     }
 
     // Validar CAPTCHA
